@@ -101,9 +101,6 @@ fabric.properties
 # Compiled class file
 *.class
 
-# Log file
-*.log
-
 # BlueJ files
 *.ctxt
 
@@ -128,9 +125,10 @@ hs_err_pid*
 #
 # Recommended template: Node.gitignore
 
-### Linux template
-*~
+/node_modules/*
 
+
+### Linux template
 # temporary files which can be created if a process still has a handle open of a deleted file
 .fuse_hidden*
 
@@ -147,7 +145,6 @@ hs_err_pid*
 # Swap
 [._]*.s[a-v][a-z]
 [._]*.sw[a-p]
-[._]s[a-rt-v][a-z]
 [._]ss[a-gi-z]
 [._]sw[a-p]
 
