@@ -18,6 +18,8 @@
 package com.remxbot.remxweb;
 
 import com.remxbot.remxweb.conf.Settings;
+import com.remxbot.remxweb.objects.network.remx.NetworkInfo;
+import org.dreamexposure.novautils.network.pubsub.PubSubManager;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -28,18 +30,27 @@ import java.util.Properties;
 
 @SpringBootApplication
 public class RemxWeb {
+    private static NetworkInfo networkInfo = new NetworkInfo();
+
     public static void main(String[] args) throws IOException {
         //Get settings
         Properties p = new Properties();
         p.load(new FileReader(new File("settings.properties")));
         Settings.init(p);
 
+        //Start redis pub/sub listeners -- client ID is -1 as this is the website and not bot.
+        PubSubManager.get().init(Settings.REDIS_HOSTNAME.name(), Integer.valueOf(Settings.REDIS_PORT.get()), Settings.REDIS_PREFIX.get(), Settings.REDIS_PASSWORD.get());
+        PubSubManager.get().register(-1, Settings.REDIS_PREFIX.get() + "/ToWeb/KeepAlive");
+
         try {
-            //SpringController.makeModel(); //TODO: Do this!
             SpringApplication.run(RemxWeb.class, args);
         } catch (Exception e) {
             //TODO: send exception to logger and/or to discord webhooks
             System.exit(4);
         }
+    }
+
+    public static NetworkInfo getNetworkInfo() {
+        return networkInfo;
     }
 }
