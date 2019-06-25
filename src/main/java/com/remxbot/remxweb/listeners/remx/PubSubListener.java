@@ -29,7 +29,7 @@ public class PubSubListener {
     @Subscribe
     public static void onPubSubReceive(PubSubReceiveEvent event) {
         //Handle keep alive...
-        if (event.getChannelName().equalsIgnoreCase(Settings.REDIS_PREFIX.get() + "/ToWeb/KeepAlive")) {
+        if (event.getChannelName().equalsIgnoreCase(Settings.REDIS_PREFIX.get() + "/ToWeb/Heartbeat")) {
             try {
                 if (RemxWeb.getNetworkInfo().clientExists(event.getClient())) {
                     //In network, update info...

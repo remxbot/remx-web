@@ -40,7 +40,7 @@ public class RemxWeb {
 
         //Start redis pub/sub listeners -- client ID is -1 as this is the website and not bot.
         PubSubManager.get().init(Settings.REDIS_HOSTNAME.name(), Integer.valueOf(Settings.REDIS_PORT.get()), Settings.REDIS_PREFIX.get(), Settings.REDIS_PASSWORD.get());
-        PubSubManager.get().register(-1, Settings.REDIS_PREFIX.get() + "/ToWeb/KeepAlive");
+        PubSubManager.get().register(-1, Settings.REDIS_PREFIX.get() + "/ToWeb/Heartbeat");
 
         try {
             SpringApplication.run(RemxWeb.class, args);
