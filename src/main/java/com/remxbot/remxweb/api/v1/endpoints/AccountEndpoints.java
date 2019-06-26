@@ -83,6 +83,8 @@ public class AccountEndpoints {
                 m.put("bot_id", Settings.BOT_ID.get());
                 m.put("year", LocalDate.now().getYear());
                 m.put("redirect_uri", Settings.REDIRECT_URI.get());
+                m.put("support_invite", Settings.SUPPORT_INVITE.get());
+                m.put("bot_invite", Settings.BOT_INVITE.get());
 
                 m.put("id", userInfo.getString("id"));
                 m.put("username", userInfo.getString("username"));

@@ -86,6 +86,8 @@ public class DiscordAccountHandler {
             m.put("year", LocalDate.now().getYear());
             m.put("redirect_uri", Settings.REDIRECT_URI.get());
             m.put("status", RemxWeb.getNetworkInfo());
+            m.put("support_invite", Settings.SUPPORT_INVITE.get());
+            m.put("bot_invite", Settings.BOT_INVITE.get());
 
             return m;
         }

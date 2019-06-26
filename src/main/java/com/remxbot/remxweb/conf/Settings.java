@@ -33,6 +33,8 @@ public enum Settings {
 
     USE_REDIS, USE_WEBHOOKS,
 
+    SUPPORT_INVITE, BOT_INVITE,
+
     DEBUG_WEBHOOK, ERROR_WEBHOOK, STATUS_WEBHOOK;
 
     private String val;
