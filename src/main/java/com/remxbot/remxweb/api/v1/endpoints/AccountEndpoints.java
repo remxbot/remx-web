@@ -30,13 +30,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.*;
 
 @Controller
 public class AccountEndpoints {
+    @SuppressWarnings("ConstantConditions")
     @GetMapping("/api/v1/account/login")
-    public static String handleDiscordCode(HttpServletRequest req, HttpServletResponse res, @RequestParam(value = "code") String code) throws IOException {
+    public static String handleDiscordCode(HttpServletRequest req, HttpServletResponse res, @RequestParam(value = "code") String code) {
         OkHttpClient client = new OkHttpClient();
 
         try {
@@ -86,7 +86,7 @@ public class AccountEndpoints {
 
                 m.put("id", userInfo.getString("id"));
                 m.put("username", userInfo.getString("username"));
-                if (userInfo.has("avatar") && userInfo.isNull("avatar")) {
+                if (userInfo.has("avatar") && !userInfo.isNull("avatar")) {
                     m.put("pfp", "https://cdn.discordapp.com/avatars/"
                             + userInfo.getString("id")
                             + "/"

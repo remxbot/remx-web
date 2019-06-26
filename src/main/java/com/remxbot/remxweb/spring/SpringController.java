@@ -87,6 +87,16 @@ public class SpringController {
         return "account/login";
     }
 
+    @RequestMapping("/account/logout")
+    public String accountLogout(Map<String, Object> model, HttpServletRequest req) {
+        if (!DiscordAccountHandler.getHandler().hasAccount(req))
+            return "redirect:/account/login";
+        DiscordAccountHandler.getHandler().removeAccount(req);
+        model.clear();
+        model.putAll(DiscordAccountHandler.getHandler().getAccount(req));
+        return "redirect:/";
+    }
+
     //Dashboard pages..
     @RequestMapping("/dashboard")
     public String mainDashboard(Map<String, Object> model, HttpServletRequest req) {
