@@ -24,12 +24,12 @@ import org.joda.time.LocalDate;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
-@SuppressWarnings({"unchecked", "RedundantCast", "Duplicates", "WeakerAccess", "unused"})
+@SuppressWarnings({"RedundantCast", "Duplicates", "unused"})
 public class DiscordAccountHandler {
     private static DiscordAccountHandler instance;
     private static Timer timer;
 
-    private HashMap<String, Map> discordAccounts = new HashMap<>();
+    private HashMap<String, Map<String, Object>> discordAccounts = new HashMap<>();
 
     //Instance handling
     private DiscordAccountHandler() {
@@ -67,9 +67,9 @@ public class DiscordAccountHandler {
     }
 
     //Getters
-    public Map getAccount(HttpServletRequest request) {
+    public Map<String, Object> getAccount(HttpServletRequest request) {
         if ((String) request.getSession(true).getAttribute("account") != null && discordAccounts.containsKey((String) request.getSession(true).getAttribute("account"))) {
-            Map m = discordAccounts.get((String) request.getSession(true).getAttribute("account"));
+            Map<String, Object> m = discordAccounts.get((String) request.getSession(true).getAttribute("account"));
             m.remove("last_use");
             m.put("last_use", System.currentTimeMillis());
 
@@ -80,7 +80,7 @@ public class DiscordAccountHandler {
 
         } else {
             //Not logged in...
-            Map m = new HashMap();
+            Map<String, Object> m = new HashMap<>();
             m.put("logged_in", false);
             m.put("bot_id", Settings.BOT_ID.get());
             m.put("year", LocalDate.now().getYear());
@@ -91,8 +91,8 @@ public class DiscordAccountHandler {
         }
     }
 
-    public Map findAccount(String userId) {
-        for (Map m : discordAccounts.values()) {
+    public Map<String, Object> findAccount(String userId) {
+        for (Map<String, Object> m : discordAccounts.values()) {
             if (m.containsKey("id")) {
                 if (m.get("id").equals(userId)) {
                     m.remove("last_use");
@@ -109,7 +109,7 @@ public class DiscordAccountHandler {
     }
 
     //Functions
-    public void addAccount(Map m, HttpServletRequest request) {
+    public void addAccount(Map<String, Object> m, HttpServletRequest request) {
         discordAccounts.remove((String) request.getSession(true).getAttribute("account"));
         m.remove("last_use");
         m.put("last_use", System.currentTimeMillis());
@@ -125,7 +125,7 @@ public class DiscordAccountHandler {
         long limit = Long.valueOf(Settings.ACCOUNT_TIME_OUT.get());
         final List<String> toRemove = new ArrayList<>();
         for (String id : discordAccounts.keySet()) {
-            Map m = discordAccounts.get(id);
+            Map<String, Object> m = discordAccounts.get(id);
             long lastUse = (long) m.get("last_use");
             if (System.currentTimeMillis() - lastUse > limit)
                 toRemove.remove(id); //Timed out, remove account info and require sign in.

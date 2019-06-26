@@ -18,18 +18,23 @@
 package com.remxbot.remxweb;
 
 import com.remxbot.remxweb.conf.Settings;
+import com.remxbot.remxweb.network.discord.DiscordAccountHandler;
 import com.remxbot.remxweb.objects.network.remx.NetworkInfo;
+import okhttp3.MediaType;
 import org.dreamexposure.novautils.network.pubsub.PubSubManager;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.session.SessionAutoConfiguration;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = SessionAutoConfiguration.class)
 public class RemxWeb {
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
     private static NetworkInfo networkInfo = new NetworkInfo();
 
     public static void main(String[] args) throws IOException {
@@ -39,15 +44,24 @@ public class RemxWeb {
         Settings.init(p);
 
         //Start redis pub/sub listeners -- client ID is -1 as this is the website and not bot.
-        PubSubManager.get().init(Settings.REDIS_HOSTNAME.name(), Integer.valueOf(Settings.REDIS_PORT.get()), Settings.REDIS_PREFIX.get(), Settings.REDIS_PASSWORD.get());
-        PubSubManager.get().register(-1, Settings.REDIS_PREFIX.get() + "/ToWeb/Heartbeat");
+        if (Settings.USE_REDIS.get().equalsIgnoreCase("true")) {
+            PubSubManager.get().init(Settings.REDIS_HOSTNAME.name(), Integer.valueOf(Settings.REDIS_PORT.get()), Settings.REDIS_PREFIX.get(), Settings.REDIS_PASSWORD.get());
+            PubSubManager.get().register(-1, Settings.REDIS_PREFIX.get() + "/ToWeb/Heartbeat");
+        }
 
+
+        //Start up spring
         try {
-            SpringApplication.run(RemxWeb.class, args);
+            SpringApplication app = new SpringApplication(RemxWeb.class);
+            app.setAdditionalProfiles(Settings.PROFILE.get());
+            app.run(args);
         } catch (Exception e) {
             //TODO: send exception to logger and/or to discord webhooks
             System.exit(4);
         }
+
+        //Init everything else
+        DiscordAccountHandler.getHandler().init();
     }
 
     public static NetworkInfo getNetworkInfo() {

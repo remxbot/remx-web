@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
-@SuppressWarnings({"unchecked", "unused"})
 @Controller
 public class SpringController {
 
@@ -56,6 +55,13 @@ public class SpringController {
         return "setup";
     }
 
+    @RequestMapping("/status")
+    public String status(Map<String, Object> model, HttpServletRequest req) {
+        model.clear();
+        model.putAll(DiscordAccountHandler.getHandler().getAccount(req));
+        return "status";
+    }
+
     //Policy pages
     @RequestMapping("/policy/privacy")
     public String privacyPolicy(Map<String, Object> model, HttpServletRequest req) {
@@ -71,10 +77,46 @@ public class SpringController {
         return "policy/tos";
     }
 
-    @RequestMapping("/status")
-    public String status(Map<String, Object> model, HttpServletRequest req) {
+    //Account pages...
+    @RequestMapping("/account/login")
+    public String accountLogin(Map<String, Object> model, HttpServletRequest req) {
+        if (DiscordAccountHandler.getHandler().hasAccount(req))
+            return "redirect:/dashboard";
         model.clear();
         model.putAll(DiscordAccountHandler.getHandler().getAccount(req));
-        return "status";
+        return "account/login";
+    }
+
+    //Dashboard pages..
+    @RequestMapping("/dashboard")
+    public String mainDashboard(Map<String, Object> model, HttpServletRequest req) {
+        if (!DiscordAccountHandler.getHandler().hasAccount(req))
+            return "redirect:/account/login";
+        model.clear();
+        model.putAll(DiscordAccountHandler.getHandler().getAccount(req));
+        return "dashboard/dashboard";
+    }
+
+
+    //Error pages
+    @RequestMapping("/400")
+    public String badRequest(Map<String, Object> model, HttpServletRequest req) {
+        model.clear();
+        model.putAll(DiscordAccountHandler.getHandler().getAccount(req));
+        return "error/400";
+    }
+
+    @RequestMapping("/404")
+    public String notFound(Map<String, Object> model, HttpServletRequest req) {
+        model.clear();
+        model.putAll(DiscordAccountHandler.getHandler().getAccount(req));
+        return "error/404";
+    }
+
+    @RequestMapping("/500")
+    public String internalError(Map<String, Object> model, HttpServletRequest req) {
+        model.clear();
+        model.putAll(DiscordAccountHandler.getHandler().getAccount(req));
+        return "error/500";
     }
 }

@@ -20,16 +20,18 @@ package com.remxbot.remxweb.conf;
 import java.util.Properties;
 
 public enum Settings {
+    PROFILE,
+
     REDIS_HOSTNAME, REDIS_PORT,
     REDIS_PASSWORD, REDIS_PREFIX,
 
-    LOG_FOLDER, LANG_PATH,
+    LOG_FOLDER,
 
     BOT_TOKEN, BOT_SECRET, BOT_ID, REDIRECT_URI,
 
     PORT, ACCOUNT_TIME_OUT,
 
-    USE_WEBHOOKS,
+    USE_REDIS, USE_WEBHOOKS,
 
     DEBUG_WEBHOOK, ERROR_WEBHOOK, STATUS_WEBHOOK;
 

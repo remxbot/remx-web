@@ -18,7 +18,7 @@
 let gulp = require('gulp');
 let sass = require('gulp-sass');
 let header = require('gulp-header');
-let clean = require('gulp-clean');
+let cleanDest = require('gulp-clean-dest');
 let cleanCSS = require('gulp-clean-css');
 let rename = require("gulp-rename");
 let autoprefixer = require('gulp-autoprefixer');
@@ -34,25 +34,6 @@ let banner = ['/*!\n',
 
 // Copy third party libraries from /node_modules into /vendor
 gulp.task('vendor', gulp.series(function(done) {
-
-    //React
-    gulp.src([
-        './node_modules/react/cjs/*'
-    ])
-        .pipe(gulp.dest('./src/main/resources/static/vendor/react'));
-
-    //React-Dom
-    gulp.src([
-        './node_modules/react-dom/cjs/*'
-    ])
-        .pipe(gulp.dest('./src/main/resources/static/vendor/react-dom'));
-
-    //React-Bootstrap
-    gulp.src([
-        './node_modules/react-bootstrap/dist/*'
-    ])
-        .pipe(gulp.dest('./src/main/resources/static/vendor/react-bootstrap'));
-
     // Bootstrap
     gulp.src([
         './node_modules/bootstrap/dist/**/*',
@@ -60,11 +41,6 @@ gulp.task('vendor', gulp.series(function(done) {
         '!./node_modules/bootstrap/dist/css/bootstrap-reboot*'
     ])
         .pipe(gulp.dest('./src/main/resources/static/vendor/bootstrap'));
-    // Font Awesome 5
-    gulp.src([
-        './node_modules/@fortawesome/**/*'
-    ])
-        .pipe(gulp.dest('./src/main/resources/static/vendor'));
 
     // jQuery
     gulp.src([
@@ -78,6 +54,26 @@ gulp.task('vendor', gulp.series(function(done) {
         './node_modules/jquery.easing/*.js'
     ])
         .pipe(gulp.dest('./src/main/resources/static/vendor/jquery-easing'));
+
+    //ChartJS
+    gulp.src([
+        './node_modules/chart.js/dist/*.js'
+    ])
+        .pipe(gulp.dest('./src/main/resources/static/vendor/chart.js'));
+
+    //DataTables
+    gulp.src([
+        './node_modules/datatables.net/js/*.js',
+        './node_modules/datatables.net-bs4/js/*.js',
+        './node_modules/datatables.net-bs4/css/*.css'
+    ])
+        .pipe(gulp.dest('./src/main/resources/static/vendor/datatables'));
+
+    // Font Awesome 5
+    gulp.src([
+        './node_modules/@fortawesome/**/*'
+    ])
+        .pipe(gulp.dest('./src/main/resources/static/vendor'));
 
     // Simple Line Icons
     gulp.src([
@@ -100,7 +96,7 @@ gulp.task('css:compile', gulp.series(function() {
             outputStyle: 'expanded'
         }).on('error', sass.logError))
         .pipe(autoprefixer({
-            browsers: ['last 2 versions'],
+            overrideBrowserslist: ['last 2 versions'],
             cascade: false
         }))
         .pipe(header(banner, {
@@ -129,11 +125,11 @@ gulp.task('js:minify', gulp.series(function() {
         './src/main/resources/src/js/**/*.js',
         '!./src/main/resources/src/js/**/*.min.js'
     ])
-        .pipe(clean())
+        .pipe(cleanDest('./src/main/resources/static/assets/js'))
         .pipe(minify({
+            noSource: true,
             ext: {
-                min: '.min.js',
-                noSource: true
+                min: '.min.js'
             }
         }))
         .pipe(gulp.dest('./src/main/resources/static/assets/js'))
@@ -148,6 +144,8 @@ gulp.task('js', gulp.series(['js:minify']));
 
 // Default task
 gulp.task('default', gulp.series(['css', 'js', 'vendor']));
+
+gulp.task('build', gulp.series(['css', 'js']));
 
 // Configure the browserSync task
 gulp.task('browserSync', gulp.series(function() {
