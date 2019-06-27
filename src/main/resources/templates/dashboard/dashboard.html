@@ -68,6 +68,13 @@
                 <span>Commands</span></a>
         </li>
 
+        <!-- Nav Item - Status -->
+        <li class="nav-item">
+            <a class="nav-link" href="/status">
+                <i class="fas fa-fw fa-info-circle"></i>
+                <span>Status</span></a>
+        </li>
+
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
             <a class="nav-link" href="/dashboard">
@@ -78,28 +85,34 @@
         <!-- Divider -->
         <hr class="sidebar-divider">
 
-        <!-- Heading -->
-        <div class="sidebar-heading">
-            Guilds
+        <!-- Guilds list (only displayed if logged in) -->
+        <div th:if="${logged_in}">
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Guilds
+            </div>
+
+            <!-- Nav Item - Guild Example 1 -->
+            <!--TODO: Remove these placeholders!!!-->
+            <div class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Guild Example 1</span>
+                </a>
+            </div>
+
+            <!-- Nav Item - Guild Example 1 -->
+            <div class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Example guild 2</span>
+                </a>
+            </div>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
         </div>
-
-        <!-- Nav Item - Guild Example 1 -->
-        <!--TODO: Remove these placeholders!!!-->
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Guild Example 1</span></a>
-        </li>
-
-        <!-- Nav Item - Guild Example 1 -->
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Example guild 2</span></a>
-        </li>
-
-        <!-- Divider -->
-        <hr class="sidebar-divider d-none d-md-block">
+        <!-- End Guilds list -->
 
         <!-- Sidebar Toggler (Sidebar) -->
         <div class="text-center d-none d-md-inline">

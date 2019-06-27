@@ -34,25 +34,11 @@ public class SpringController {
         return "index";
     }
 
-    @RequestMapping("/about")
-    public String about(Map<String, Object> model, HttpServletRequest req) {
-        model.clear();
-        model.putAll(DiscordAccountHandler.getHandler().getAccount(req));
-        return "about";
-    }
-
     @RequestMapping("/commands")
     public String commands(Map<String, Object> model, HttpServletRequest req) {
         model.clear();
         model.putAll(DiscordAccountHandler.getHandler().getAccount(req));
         return "commands";
-    }
-
-    @RequestMapping("/setup")
-    public String setup(Map<String, Object> model, HttpServletRequest req) {
-        model.clear();
-        model.putAll(DiscordAccountHandler.getHandler().getAccount(req));
-        return "setup";
     }
 
     @RequestMapping("/status")
