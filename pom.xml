@@ -57,7 +57,7 @@
         </repository>
         <repository>
             <id>nova-public</id>
-            <url>http://repo.novafox161.com/repositories/nova-public/</url>
+            <url>http://repo.novafox161.com/repository/nova-public/</url>
         </repository>
     </repositories>
 
