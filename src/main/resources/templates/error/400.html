@@ -93,22 +93,16 @@
                 Guilds
             </div>
 
-            <!-- Nav Item - Guild Example 1 -->
-            <!--TODO: Remove these placeholders!!!-->
-            <div class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Guild Example 1</span>
-                </a>
-            </div>
-
-            <!-- Nav Item - Guild Example 1 -->
-            <div class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Example guild 2</span>
-                </a>
-            </div>
+            <!-- Start Nav Item - Guild Container -->
+            <th:block th:each="guild : ${guilds}">
+                <div class="nav-item">
+                    <a class="nav-link" th:href="'/dashboard/' + ${guild.id}">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span th:text="${guild.name}"></span>
+                    </a>
+                </div>
+            </th:block>
+            <!-- End Nav Item - Guild Container -->
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
