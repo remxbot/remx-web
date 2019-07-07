@@ -18,10 +18,13 @@
 package com.remxbot.remxweb.spring;
 
 import com.remxbot.remxweb.network.discord.DiscordAccountHandler;
+import com.remxbot.remxweb.objects.guild.WebGuild;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -91,6 +94,32 @@ public class SpringController {
         model.clear();
         model.putAll(DiscordAccountHandler.getHandler().getAccount(req));
         return "dashboard/dashboard";
+    }
+
+    @RequestMapping("/dashboard/{id}")
+    public String guildDashboard(Map<String, Object> model, HttpServletRequest req, @PathVariable long id) {
+        if (!DiscordAccountHandler.getHandler().hasAccount(req)) {
+            return "redirect:/account/login";
+        }
+        model.clear();
+        model.putAll(DiscordAccountHandler.getHandler().getAccount(req));
+
+        //Check if user is in guild, otherwise 404
+        @SuppressWarnings("unchecked")
+        List<WebGuild> guilds = (List<WebGuild>) model.get("guilds");
+
+        for (WebGuild g : guilds) {
+            if (g.getId() == id) {
+                //We're good, its present
+
+                model.put("selected", g); //This way we can easily reference it on page
+
+                return "dashboard/guild/guild";
+            }
+        }
+        //Guild not found, meaning user is not in this guild.
+
+        return "error/404";
     }
 
 
