@@ -75,6 +75,12 @@ public class NetworkInfo {
         return clients.size();
     }
 
+    public int getExpectedClients() {
+        if (!clients.isEmpty())
+            return clients.get(0).getExpectedClients();
+        return 1;
+    }
+
     public String getUptime() {
         RuntimeMXBean mxBean = ManagementFactory.getRuntimeMXBean();
         Interval interval = new Interval(mxBean.getStartTime(), System.currentTimeMillis());

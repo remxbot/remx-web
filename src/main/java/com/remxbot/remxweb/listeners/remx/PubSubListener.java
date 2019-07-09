@@ -23,7 +23,7 @@ import com.remxbot.remxweb.conf.Settings;
 import com.remxbot.remxweb.objects.network.remx.ConnectedClient;
 import org.dreamexposure.novautils.events.network.pubsub.PubSubReceiveEvent;
 
-@SuppressWarnings("UnstableApiUsage")
+@SuppressWarnings({"UnstableApiUsage", "Duplicates"})
 public class PubSubListener {
 
     @Subscribe
@@ -36,6 +36,8 @@ public class PubSubListener {
                     ConnectedClient cc = RemxWeb.getNetworkInfo().getClient(event.getClient());
 
                     cc.setLastKeepAlive(System.currentTimeMillis());
+                    cc.setExpectedClients(event.getData().getInt("expected_clients"));
+                    cc.setBaseUrl(event.getData().getString("base_url"));
                     cc.setConnectedServers(event.getData().getInt("server_count"));
                     cc.setUptime(event.getData().getString("uptime"));
                     cc.setMemUsed(event.getData().getDouble("mem_used"));
@@ -44,6 +46,8 @@ public class PubSubListener {
                     ConnectedClient cc = new ConnectedClient(event.getClient());
 
                     cc.setLastKeepAlive(System.currentTimeMillis());
+                    cc.setExpectedClients(event.getData().getInt("expected_clients"));
+                    cc.setBaseUrl(event.getData().getString("base_url"));
                     cc.setConnectedServers(event.getData().getInt("server_count"));
                     cc.setUptime(event.getData().getString("uptime"));
                     cc.setMemUsed(event.getData().getDouble("mem_used"));

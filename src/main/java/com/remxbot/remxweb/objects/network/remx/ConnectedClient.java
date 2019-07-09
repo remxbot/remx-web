@@ -23,6 +23,8 @@ import java.util.Date;
 public class ConnectedClient {
     private final int clientIndex;
 
+    private int expectedClients;
+    private String baseUrl;
     private int connectedServers;
     private long lastKeepAlive;
     private String uptime;
@@ -41,6 +43,14 @@ public class ConnectedClient {
     //Getters
     public int getClientIndex() {
         return clientIndex;
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public int getExpectedClients() {
+        return expectedClients;
     }
 
     public int getConnectedServers() {
@@ -66,6 +76,14 @@ public class ConnectedClient {
     }
 
     //Setters
+    public void setExpectedClients(int expectedClients) {
+        this.expectedClients = expectedClients;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
     public void setConnectedServers(int _connectedServers) {
         connectedServers = _connectedServers;
     }
